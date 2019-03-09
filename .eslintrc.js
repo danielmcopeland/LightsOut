@@ -22,7 +22,7 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     indent: ['error', 2, { SwitchCase: 1 }],
     'comma-dangle': ['error', 'always-multiline'],
-    'linebreak-style': ['error', 'unix'],
+    'linebreak-style': [0, 'error', 'unix'],
     quotes: ['error', 'single'],
     semi: ['error', 'always'],
     'no-console': ['warn', { allow: ['info', 'error'] }],

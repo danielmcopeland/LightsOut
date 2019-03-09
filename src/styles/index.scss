@@ -9,3 +9,51 @@ body {
     color: $main;
   }
 }
+
+.game-row {
+  max-width: 802px;
+  margin: 0 auto;
+}
+
+.game {
+  border: thin solid #ddd;
+}
+
+.body {
+  display: flex;
+}
+
+.help {
+  color: #666;
+  margin: 10px;
+  text-align: center;
+}
+
+.left {
+  text-align: center;
+  width: 50%;
+  border: thin solid #ddd;
+}
+
+.right {
+  text-align: center;
+  padding: 10px;
+  width: 50%;
+  border: thin solid #ddd;
+}
+
+.star {
+  display: inline-block;
+  margin: 0;
+}
+
+.grid-button {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+}
+
+// .star:after {
+//   content: "\2605";
+//   font-size: 45px;
+// }
