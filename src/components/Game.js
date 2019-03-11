@@ -5,8 +5,15 @@ import GameRow from './GameRow';
 const Game = props => {
   const [gameGrid, setGameGrid] = useState(utils.falseArray(0, props.size));
   const [answerGrid, setAnswerGrid] = useState(utils.falseArray(0, props.size));
+  const [gridsArray, setGridsArray] = useState([]);
   const [tempTest, setTempTest] = useState([NaN, NaN]);
   const [difficulty, setDifficulty] = useState(10);
+
+  const gridsArrayPusher = grid => {
+    const tempGrids = gridsArray;
+    tempGrids.push(grid);
+    setGridsArray(tempGrids);
+  };
 
   const clickHandle = (yval, xval) => {
     const tempGrid = gameGrid;
@@ -42,9 +49,18 @@ const Game = props => {
     }
   };
 
+  const setAnswerGridHandle = grid => {
+    for (let i = 0; i < props.size; i++) {
+      for (let j = 0; j < props.size; j++) {
+        setAnswerHandle(i, j, grid[i][j]);
+      }
+    }
+  };
+
   const winCheck = () => {
     return gameGrid.every(row => row.every(a => a));
   };
+
   const reverseWinCheck = () => {
     return gameGrid.every(row => row.every(a => !a));
   };
@@ -61,50 +77,39 @@ const Game = props => {
     return Math.floor(Math.random() * Math.floor(max));
   };
 
-  const filterOff = () => {
-    for (let i = 0; i < 10; i++) {
-      const a = getRandomInt(props.size);
-      clickHandle(0, a);
-    }
-
-    for (let i = 1; i < props.size; i++) {
+  const filterOn = () => {
+    for (let num = 0; num < Math.pow(2, props.size); num++) {
       for (let j = 0; j < props.size; j++) {
-        if (gameGrid[i - 1][j]) {
-          clickHandle(i, j);
+        if (Math.pow(2, j) & num) {
+          setAnswerHandle(0, j, 1);
+        } else {
+          setAnswerHandle(0, j, 0);
         }
       }
-    }
-  };
-  const filterOn = num => {
-    if (num >= Math.pow(2, props.size)) {
-      return;
-    }
-    // for (let i = 0; i < 10; i++) {
-    //   const a = getRandomInt(props.size);
-    //   clickHandle(0, a);
-    // }
-
-    for (let j = 0; j < props.size; j++) {
-      if (Math.pow(2, j) & num) {
-        setAnswerHandle(0, j, 1);
-      } else {
-        setAnswerHandle(0, j, 0);
-      }
-    }
-
-    for (let i = 1; i < props.size; i++) {
-      for (let j = 0; j < props.size; j++) {
-        if (!gameGrid[i - 1][j]) {
-          clickHandle(i, j);
+      for (let i = 1; i < props.size; i++) {
+        for (let j = 0; j < props.size; j++) {
+          if (!gameGrid[i - 1][j]) {
+            clickHandle(i, j);
+          }
         }
+      }
+      if (winCheck()) {
+        // console.log(num);
+        const temp = utils.falseArray(0, props.size);
+        for (let i = 0; i < props.size; i++) {
+          for (let j = 0; j < props.size; j++) {
+            temp[i][j] = answerGrid[i][j];
+          }
+        }
+        gridsArrayPusher(temp);
       }
     }
     if (!winCheck()) {
-      filterOn(num + 1);
-    } else {
-      console.log(num);
+      setAnswerGridHandle(gridsArray[0]);
     }
+    console.log(gridsArray.length);
   };
+
   return (
     <div>
       <form>
@@ -119,8 +124,7 @@ const Game = props => {
       <div>
         <button onClick={handleSubmitDifficulty}>New Challenge</button>
         <button onClick={props.startNewGame}>Start New Game</button>
-        <button onClick={filterOff}>Filter Off</button>
-        <button onClick={() => filterOn(0)}>Filter On</button>
+        <button onClick={filterOn}>Filter On</button>
 
         <div>{winCheck() ? <div>Win!</div> : <div />}</div>
         <div>{reverseWinCheck() ? <div>Win!</div> : <div />}</div>
@@ -135,9 +139,7 @@ const Game = props => {
             size={props.size}
           />
         ))}
-        Last button clicked= {tempTest[0]}, {tempTest[1]}
         <br />
-        {gameGrid[0][0]}
       </div>
       {props.isCheatMode ? (
         <div className="game2">
@@ -150,18 +152,31 @@ const Game = props => {
               size={props.size}
             />
           ))}
-          <br />
-          {answerGrid[0][0]}
+          <button onClick={() => gridsArrayPusher(answerGrid)}>
+            add answer
+          </button>
         </div>
       ) : (
+        <div />
+      )}
+      {gridsArray.length > 0 ? (
         <div>
-          <div>{gameGrid}</div>
-          <div>{gameGrid[0]}</div>
-          <div>{gameGrid[1]}</div>
-          <div>{gameGrid[2]}</div>
-          <div>{gameGrid[3]}</div>
-          <div>{gameGrid[4]}</div>
+          {gridsArray.map(ans => (
+            <div className="grid" key={'a' + ans}>
+              {utils.range(0, props.size - 1).map(number => (
+                <GameRow
+                  key={'a' + number}
+                  yval={number}
+                  gameGrid={ans}
+                  handleClick={() => {}}
+                  size={props.size}
+                />
+              ))}
+            </div>
+          ))}
         </div>
+      ) : (
+        <div />
       )}
     </div>
   );

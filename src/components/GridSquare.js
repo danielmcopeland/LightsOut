@@ -11,9 +11,7 @@ const GridSquare = props => {
             : 'gray',
         }}
         onClick={() => props.onClicker(props.yval, props.xval)}
-      >
-        {props.yval}, {props.xval}
-      </button>
+      />
     </div>
   );
 };

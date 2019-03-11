@@ -7,7 +7,7 @@ export function App({ initialData }) {
   const [isCheatMode, setCheatMode] = useState(false);
 
   const updateGameCount = num => {
-    if (!((count == 1 && num == -1) || (count == 15 && num == 1))) {
+    if (!((count == 1 && num == -1) || (count == 17 && num == 1))) {
       setGameId(gameId + 1);
       setCount(count + num);
     }
@@ -20,12 +20,6 @@ export function App({ initialData }) {
   return (
     <div>
       <h1>{initialData.appName}</h1>
-      This is a sample stateful and server-side rendered React application.
-      <br />
-      <br />
-      Here is a button that will track how many times you click it:
-      <br />
-      <br />
       <button onClick={() => updateGameCount(-1)}>-</button>
       {count}
       <button onClick={() => updateGameCount(1)}>+</button>
