@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import Game from './Game';
+import TestFunction from './TestFunction';
+import CodeBreak from './CodeBreak';
+import Intcode from './Intcode';
 
 export function App({ initialData }) {
   const [count, setCount] = useState(5);
@@ -17,8 +20,15 @@ export function App({ initialData }) {
     setCheatMode(!isCheatMode);
   };
 
+  const styles = {
+    backgroundColor: 'black',
+  };
+
   return (
-    <div>
+    <div style={{ backgroundColor: 'black' }}>
+      <TestFunction />
+      <CodeBreak />
+      <Intcode />
       <h1>{initialData.appName}</h1>
       <button onClick={() => updateGameCount(-1)}>-</button>
       {count}
